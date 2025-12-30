@@ -1,6 +1,6 @@
-# XComments
+# Highlighted Comments
 
-The XComments Extension will help you create more human-friendly comments in your code.  
+The Highlighted Comments Extension will help you create more human-friendly comments in your code.  
 With this Extension, you will be able to categorise your cody by special colour into:
 * Red (!)
 * Blue (?)
@@ -20,20 +20,20 @@ With this Extension, you will be able to categorise your cody by special colour 
 This extension can be configured in User Settings or Workspace settings.
 
 
-`"xcomments.multilineComments": true`  
+`"highlighted-comments.multilineComments": true`  
  This setting will control whether multiline comments are styled using the annotation tags.
  When false, multiline comments will be presented without decoration.
 
-`"xcomments.highlightPlainText": false`  
+`"highlighted-comments.highlightPlainText": false`  
 This setting will control whether comments in a plain text file are styled using the annotation tags.
 When true, the tags (defaults: `! * ? // ~ & ^`) will be detected if they're the first character on a line.
 
-`xcomments.tags`  
+`highlighted-comments.tags`  
 The tags are the characters or sequences used to mark a comment for decoration.
 The default 7 can be modifed to change the colors, and more can be added.
 
 ```json
-"xcomments.tags": [
+"highlighted-comments.tags": [
   {
     "tag": "!",
     "color": "#FF2D00",

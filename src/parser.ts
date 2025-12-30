@@ -39,7 +39,7 @@ export class Parser
   private ignoreFirstLine = false;
   public supportedLanguage = true;
 
-  private contributions: Contributions = vscode.workspace.getConfiguration('xcomments') as any;
+  private contributions: Contributions = vscode.workspace.getConfiguration('highlighted-comments') as any;
 
   public constructor() {
     this.setTags();

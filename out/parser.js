@@ -15,7 +15,7 @@ class Parser {
         this.isPlainText = false;
         this.ignoreFirstLine = false;
         this.supportedLanguage = true;
-        this.contributions = vscode.workspace.getConfiguration('xcomments');
+        this.contributions = vscode.workspace.getConfiguration('highlighted-comments');
         this.setTags();
     }
     /**

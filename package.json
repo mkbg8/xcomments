@@ -1,5 +1,5 @@
 {
-	"name": "xcomments",
+	"name": "highlighted-comments",
 	"displayName": "Highlighted Comments",
 	"icon": "icon.png",
 	"description": "Add 'highlighter' comments to your code by using a simple syntax. e.g., // Y! This is a yellow highlighted comment",
@@ -118,19 +118,19 @@
 	"main": "./out/extension.js",
 	"contributes": {
 		"configuration": {
-			"title": "XComments Configuration",
+			"title": "Highlighted Comments Configuration",
 			"properties": {
-				"xcomments.multilineComments": {
+				"highlighted-comments.multilineComments": {
 					"type": "boolean",
 					"description": "Whether the multiline comment highlighter should be active",
 					"default": true
 				},
-				"xcomments.highlightPlainText": {
+				"highlighted-comments.highlightPlainText": {
 					"type": "boolean",
 					"description": "Whether the plaintext comment highlighter should be active",
 					"default": false
 				},
-				"xcomments.tags": {
+				"highlighted-comments.tags": {
 					"type": "array",
 					"description": "Tags which are used to color the comments. Changes require a restart of VS Code to take effect",
 					"default": [
