@@ -304,6 +304,9 @@ class Parser {
             if (item.strikethrough) {
                 options.textDecoration = "line-through";
             }
+            if (item.fontWeight) {
+                options.fontWeight = item.fontWeight;
+            }
             let escapedSequence = item.tag.replace(/([()[{*+.$^\\|?])/g, '\\$1');
             this.tags.push({
                 tag: item.tag,
