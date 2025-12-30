@@ -4,7 +4,7 @@
 	"icon": "icon.png",
 	"description": "Add 'highlighter' comments to your code by using a simple syntax. e.g., // Y! This is a yellow highlighted comment",
 	"version": "1.0.0",
-	"publisher": "bg8",
+	"publisher": "Michael Kiss",
 	"author": {
 		"name": "BRAING8"
 	},

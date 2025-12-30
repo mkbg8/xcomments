@@ -211,3 +211,6 @@ The default 7 can be modifed to change the colors, and more can be added.
 * Visual Basic
 * Vue.js
 * YAML -->
+
+## Manual Install
+code --install-extension highlighted-comments-1.0.0.vsix
