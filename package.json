@@ -2,8 +2,8 @@
 	"name": "xcomments",
 	"displayName": "XComments",
 	"icon": "icon.png",
-	"description": "Base on Parth Rastogi's Colorful Comments",
-	"version": "0.1",
+	"description": "Based on Parth Rastogi's Colorful Comments",
+	"version": "1.0.0",
 	"publisher": "BRAING8",
 	"author": {
 		"name": "BRAING8"
