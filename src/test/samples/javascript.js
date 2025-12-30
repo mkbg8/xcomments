@@ -1,17 +1,12 @@
 
 /*
-? My Class
-! Creating some Copyright Notes
+ ! My Class
+ ! Creating some Copyright Notes
 */
 
 /*
-  & My Function
-  ! Some Alert
-  ^ Some stuff
-  ? Questions
-  * Highlights
-  ~ Arrow Function
-  TODO Colorful 
+  !M Some Alert
+  !M Another Alert
 */
 
 var myFunction = function(myParam) {

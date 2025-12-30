@@ -21,7 +21,7 @@ class Parser {
             textDecoration: 'none; display: none;'
         });
     }
-    /**
+    /*
     * Sets the regex to be used by the matcher based on the config specified in the package.json
     * @param languageCode The short code of the current language
     * https://code.visualstudio.com/docs/languages/identifiers
@@ -102,14 +102,14 @@ class Parser {
             let commentBlock = match[0];
             let line;
             while (line = commentRegEx.exec(commentBlock)) {
-                let startPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
+                let startPos = activeEditor.document.positionAt(match.index + line.index);
                 let endPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
                 let range = { range: new vscode.Range(startPos, endPos) };
                 let matchString = line[3];
                 let matchTag = this.tags.find(item => item.tag.toLowerCase() === matchString.toLowerCase());
                 if (matchTag) {
                     matchTag.ranges.push(range);
-                    let tagStartPos = startPos;
+                    let tagStartPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
                     let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
                     matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
                 }
@@ -138,14 +138,14 @@ class Parser {
             let commentBlock = match[0];
             let line;
             while (line = commentRegEx.exec(commentBlock)) {
-                let startPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
+                let startPos = activeEditor.document.positionAt(match.index + line.index);
                 let endPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
                 let range = { range: new vscode.Range(startPos, endPos) };
                 let matchString = line[3];
                 let matchTag = this.tags.find(item => item.tag.toLowerCase() === matchString.toLowerCase());
                 if (matchTag) {
                     matchTag.ranges.push(range);
-                    let tagStartPos = startPos;
+                    let tagStartPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
                     let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
                     matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
                 }

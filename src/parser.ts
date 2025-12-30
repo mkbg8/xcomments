@@ -51,7 +51,7 @@ export class Parser
     });
   }
 
-	/**
+	/*
 	* Sets the regex to be used by the matcher based on the config specified in the package.json
 	* @param languageCode The short code of the current language
 	* https://code.visualstudio.com/docs/languages/identifiers
@@ -163,7 +163,7 @@ export class Parser
       let line;
       while (line = commentRegEx.exec(commentBlock))
       {
-        let startPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
+        let startPos = activeEditor.document.positionAt(match.index + line.index);
         let endPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
         let range: vscode.DecorationOptions = { range: new vscode.Range(startPos, endPos) };
 
@@ -173,7 +173,7 @@ export class Parser
         if (matchTag) {
           matchTag.ranges.push(range);
 
-          let tagStartPos = startPos;
+          let tagStartPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
           let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
           matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
         }
@@ -214,7 +214,7 @@ export class Parser
       let line;
       while (line = commentRegEx.exec(commentBlock))
       {
-        let startPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
+        let startPos = activeEditor.document.positionAt(match.index + line.index);
         let endPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
         let range: vscode.DecorationOptions = { range: new vscode.Range(startPos, endPos) };
 
@@ -224,7 +224,7 @@ export class Parser
         if (matchTag) {
           matchTag.ranges.push(range);
 
-          let tagStartPos = startPos;
+          let tagStartPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
           let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
           matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
         }

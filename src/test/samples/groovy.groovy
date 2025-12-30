@@ -3,9 +3,7 @@ class Example
 {
   static void main(String[] args) 
   {
-    // ! Hello World
-    // * Another Comment
-    // ? and Another
+    // B! Hello World
     One can see the use of a semi-colon after each statement
     def x = 5;
     println('Hello World');  
@@ -13,5 +11,6 @@ class Example
 }
 
 /* 
- ^ Block Comments are the Same 
+ M! Magenta text
+ G! Green text
 */
