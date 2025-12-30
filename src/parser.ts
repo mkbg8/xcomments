@@ -6,6 +6,7 @@ interface CommentTag
   escapedTag: string;
   decoration: vscode.TextEditorDecorationType;
   ranges: Array<vscode.DecorationOptions>;
+  tagRanges: Array<vscode.Range>;
 }
 
 interface Contributions
@@ -41,8 +42,13 @@ export class Parser
 
   private contributions: Contributions = vscode.workspace.getConfiguration('highlighted-comments') as any;
 
+  private hideTagDecoration: vscode.TextEditorDecorationType;
+
   public constructor() {
     this.setTags();
+    this.hideTagDecoration = vscode.window.createTextEditorDecorationType({
+      textDecoration: 'none; display: none;'
+    });
   }
 
 	/**
@@ -68,7 +74,7 @@ export class Parser
       this.expression = "(^)+([ \\t]*[ \\t]*)";
     }
     else {
-      this.expression = "(" + this.delimiter.replace(/\//ig, "\\/") + ")+( |\t)*";
+      this.expression = "(" + this.delimiter.replace(/\//ig, "\\/") + ")+([ \\t]*)";
     }
 
     this.expression += "(";
@@ -105,6 +111,14 @@ export class Parser
       let matchTag = this.tags.find(item => item.tag.toLowerCase() === match[3].toLowerCase());
       if (matchTag) {
         matchTag.ranges.push(range);
+
+        let delimiterLength = match[1] ? match[1].length : 0;
+        let whitespaceLength = match[2] ? match[2].length : 0;
+        let tagStartIndex = match.index + delimiterLength + whitespaceLength;
+        
+        let tagStartPos = activeEditor.document.positionAt(tagStartIndex);
+        let tagEndPos = activeEditor.document.positionAt(tagStartIndex + match[3].length);
+        matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
       }
     }
   }
@@ -158,6 +172,10 @@ export class Parser
 
         if (matchTag) {
           matchTag.ranges.push(range);
+
+          let tagStartPos = startPos;
+          let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
+          matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
         }
       }
     }
@@ -205,6 +223,10 @@ export class Parser
 
         if (matchTag) {
           matchTag.ranges.push(range);
+
+          let tagStartPos = startPos;
+          let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
+          matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
         }
       }
     }
@@ -222,6 +244,33 @@ export class Parser
       activeEditor.setDecorations(tag.decoration, tag.ranges);
 
       tag.ranges.length = 0;
+    }
+  }
+
+  public UpdateCursorDecorations(activeEditor: vscode.TextEditor): void
+  {
+      let rangesToHide: vscode.Range[] = [];
+      let activeLines = new Set(activeEditor.selections.map(s => s.active.line));
+
+      for (let tag of this.tags)
+      {
+          for (let range of tag.tagRanges)
+          {
+              if (!activeLines.has(range.start.line))
+              {
+                  rangesToHide.push(range);
+              }
+          }
+      }
+      activeEditor.setDecorations(this.hideTagDecoration, rangesToHide);
+  }
+
+  public ClearDecorations(): void
+  {
+    for (let tag of this.tags)
+    {
+      tag.ranges.length = 0;
+      tag.tagRanges.length = 0;
     }
   }
 
@@ -429,6 +478,7 @@ export class Parser
         tag: item.tag,
         escapedTag: escapedSequence.replace(/\//gi, "\\/"), 
         ranges: [],
+        tagRanges: [],
         decoration: vscode.window.createTextEditorDecorationType(options)
       });
   }

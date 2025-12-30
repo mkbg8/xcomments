@@ -12,10 +12,12 @@ export function activate(context: vscode.ExtensionContext)
 
 		if (!parser.supportedLanguage) return;
 
+		parser.ClearDecorations();
 		parser.FindSingleLineComments(activeEditor);
 		parser.FindBlockComments(activeEditor);
 		parser.FindJSDocComments(activeEditor);
 		parser.ApplyDecorations(activeEditor);
+		parser.UpdateCursorDecorations(activeEditor);
 	};
 
 	if (vscode.window.activeTextEditor)
@@ -43,6 +45,12 @@ export function activate(context: vscode.ExtensionContext)
 	{
 		if (activeEditor && event.document === activeEditor.document) {
 			triggerUpdateDecorations();
+		}
+	}, null, context.subscriptions);
+
+	vscode.window.onDidChangeTextEditorSelection(event => {
+		if (activeEditor && event.textEditor === activeEditor) {
+			parser.UpdateCursorDecorations(activeEditor);
 		}
 	}, null, context.subscriptions);
 

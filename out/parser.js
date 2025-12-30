@@ -17,6 +17,9 @@ class Parser {
         this.supportedLanguage = true;
         this.contributions = vscode.workspace.getConfiguration('highlighted-comments');
         this.setTags();
+        this.hideTagDecoration = vscode.window.createTextEditorDecorationType({
+            textDecoration: 'none; display: none;'
+        });
     }
     /**
     * Sets the regex to be used by the matcher based on the config specified in the package.json
@@ -36,7 +39,7 @@ class Parser {
             this.expression = "(^)+([ \\t]*[ \\t]*)";
         }
         else {
-            this.expression = "(" + this.delimiter.replace(/\//ig, "\\/") + ")+( |\t)*";
+            this.expression = "(" + this.delimiter.replace(/\//ig, "\\/") + ")+([ \\t]*)";
         }
         this.expression += "(";
         this.expression += characters.join("|");
@@ -63,6 +66,12 @@ class Parser {
             let matchTag = this.tags.find(item => item.tag.toLowerCase() === match[3].toLowerCase());
             if (matchTag) {
                 matchTag.ranges.push(range);
+                let delimiterLength = match[1] ? match[1].length : 0;
+                let whitespaceLength = match[2] ? match[2].length : 0;
+                let tagStartIndex = match.index + delimiterLength + whitespaceLength;
+                let tagStartPos = activeEditor.document.positionAt(tagStartIndex);
+                let tagEndPos = activeEditor.document.positionAt(tagStartIndex + match[3].length);
+                matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
             }
         }
     }
@@ -100,6 +109,9 @@ class Parser {
                 let matchTag = this.tags.find(item => item.tag.toLowerCase() === matchString.toLowerCase());
                 if (matchTag) {
                     matchTag.ranges.push(range);
+                    let tagStartPos = startPos;
+                    let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
+                    matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
                 }
             }
         }
@@ -133,6 +145,9 @@ class Parser {
                 let matchTag = this.tags.find(item => item.tag.toLowerCase() === matchString.toLowerCase());
                 if (matchTag) {
                     matchTag.ranges.push(range);
+                    let tagStartPos = startPos;
+                    let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
+                    matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
                 }
             }
         }
@@ -145,6 +160,24 @@ class Parser {
         for (let tag of this.tags) {
             activeEditor.setDecorations(tag.decoration, tag.ranges);
             tag.ranges.length = 0;
+        }
+    }
+    UpdateCursorDecorations(activeEditor) {
+        let rangesToHide = [];
+        let activeLines = new Set(activeEditor.selections.map(s => s.active.line));
+        for (let tag of this.tags) {
+            for (let range of tag.tagRanges) {
+                if (!activeLines.has(range.start.line)) {
+                    rangesToHide.push(range);
+                }
+            }
+        }
+        activeEditor.setDecorations(this.hideTagDecoration, rangesToHide);
+    }
+    ClearDecorations() {
+        for (let tag of this.tags) {
+            tag.ranges.length = 0;
+            tag.tagRanges.length = 0;
         }
     }
     /**
@@ -326,6 +359,7 @@ class Parser {
             tag: item.tag,
             escapedTag: escapedSequence.replace(/\//gi, "\\/"),
             ranges: [],
+            tagRanges: [],
             decoration: vscode.window.createTextEditorDecorationType(options)
         });
     }
