@@ -1,8 +1,8 @@
 {
 	"name": "xcomments",
-	"displayName": "XComments",
+	"displayName": "Highlighted Comments",
 	"icon": "icon.png",
-	"description": "Based on Parth Rastogi's Colorful Comments",
+	"description": "Add 'highlighter' comments to your code by using a simple syntax. e.g., // Y! This is a yellow highlighted comment",
 	"version": "1.0.0",
 	"publisher": "bg8",
 	"author": {
