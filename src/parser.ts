@@ -5,7 +5,9 @@ interface CommentTag
   tag: string;
   escapedTag: string;
   decoration: vscode.TextEditorDecorationType;
+  decorationTag: vscode.TextEditorDecorationType;
   ranges: Array<vscode.DecorationOptions>;
+  decorationTagRanges: Array<vscode.DecorationOptions>;
   tagRanges: Array<vscode.Range>;
 }
 
@@ -163,18 +165,17 @@ export class Parser
       let line;
       while (line = commentRegEx.exec(commentBlock))
       {
-        let startPos = activeEditor.document.positionAt(match.index + line.index);
-        let endPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
-        let range: vscode.DecorationOptions = { range: new vscode.Range(startPos, endPos) };
-
         let matchString = line[3] as string;
         let matchTag = this.tags.find(item => item.tag.toLowerCase() === matchString.toLowerCase());
 
         if (matchTag) {
-          matchTag.ranges.push(range);
-
+          let lineStartPos = activeEditor.document.positionAt(match.index + line.index);
           let tagStartPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
           let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
+          let lineEndPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
+          
+          matchTag.ranges.push({ range: new vscode.Range(tagEndPos, lineEndPos) });
+          matchTag.decorationTagRanges.push({ range: new vscode.Range(lineStartPos, tagEndPos) });
           matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
         }
       }
@@ -214,18 +215,17 @@ export class Parser
       let line;
       while (line = commentRegEx.exec(commentBlock))
       {
-        let startPos = activeEditor.document.positionAt(match.index + line.index);
-        let endPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
-        let range: vscode.DecorationOptions = { range: new vscode.Range(startPos, endPos) };
-
         let matchString = line[3] as string;
         let matchTag = this.tags.find(item => item.tag.toLowerCase() === matchString.toLowerCase());
 
         if (matchTag) {
-          matchTag.ranges.push(range);
-
+          let lineStartPos = activeEditor.document.positionAt(match.index + line.index);
           let tagStartPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
           let tagEndPos = activeEditor.document.positionAt(match.index + line.index + line[2].length + matchString.length);
+          let lineEndPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
+          
+          matchTag.ranges.push({ range: new vscode.Range(tagEndPos, lineEndPos) });
+          matchTag.decorationTagRanges.push({ range: new vscode.Range(lineStartPos, tagEndPos) });
           matchTag.tagRanges.push(new vscode.Range(tagStartPos, tagEndPos));
         }
       }
@@ -242,8 +242,10 @@ export class Parser
     for (let tag of this.tags)
     {
       activeEditor.setDecorations(tag.decoration, tag.ranges);
+      activeEditor.setDecorations(tag.decorationTag, tag.decorationTagRanges);
 
       tag.ranges.length = 0;
+      tag.decorationTagRanges.length = 0;
     }
   }
 
@@ -270,6 +272,7 @@ export class Parser
     for (let tag of this.tags)
     {
       tag.ranges.length = 0;
+      tag.decorationTagRanges.length = 0;
       tag.tagRanges.length = 0;
     }
   }
@@ -478,8 +481,10 @@ export class Parser
         tag: item.tag,
         escapedTag: escapedSequence.replace(/\//gi, "\\/"), 
         ranges: [],
+        decorationTagRanges: [],
         tagRanges: [],
-        decoration: vscode.window.createTextEditorDecorationType(options)
+        decoration: vscode.window.createTextEditorDecorationType(options),
+        decorationTag: vscode.window.createTextEditorDecorationType(options)
       });
   }
 

@@ -5,6 +5,11 @@
 */
 
 /*
+! My Class
+! Creating some Copyright Notes
+*/
+
+/*
   !M Some Alert
   !M Another Alert
 */
