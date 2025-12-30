@@ -141,24 +141,10 @@
                             "backgroundColor": "#BAC602"
                         },
                         {
-                            "tag": "Y*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#BAC602",
-                            "fontWeight": "bold"
-                        },
-                        {
                             "tag": "Y+!",
                             "color": "#000000",
                             "strikethrough": false,
                             "backgroundColor": "#EAF622"
-                        },
-                        {
-                            "tag": "Y+*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#EAF622",
-                            "fontWeight": "bold"
                         },
                         {
                             "tag": "G!",
@@ -167,24 +153,10 @@
                             "backgroundColor": "#00CF00"
                         },
                         {
-                            "tag": "G*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#00CF00",
-                            "fontWeight": "bold"
-                        },
-                        {
                             "tag": "G+!",
                             "color": "#000000",
                             "strikethrough": false,
                             "backgroundColor": "#40FF40"
-                        },
-                        {
-                            "tag": "G+*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#40FF40",
-                            "fontWeight": "bold"
                         },
                         {
                             "tag": "M!",
@@ -193,24 +165,10 @@
                             "backgroundColor": "#DE50FF"
                         },
                         {
-                            "tag": "M*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#DE50FF",
-                            "fontWeight": "bold"
-                        },
-                        {
                             "tag": "M+!",
                             "color": "#000000",
                             "strikethrough": false,
                             "backgroundColor": "#AE10DF"
-                        },
-                        {
-                            "tag": "M+*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#AE10DF",
-                            "fontWeight": "bold"
                         },
                         {
                             "tag": "B!",
@@ -219,24 +177,10 @@
                             "backgroundColor": "#40A0FF"
                         },
                         {
-                            "tag": "B*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#40A0FF",
-                            "fontWeight": "bold"
-                        },
-                        {
                             "tag": "B+!",
                             "color": "#000000",
                             "strikethrough": false,
                             "backgroundColor": "#80E0FF"
-                        },
-                        {
-                            "tag": "B+*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#80E0FF",
-                            "fontWeight": "bold"
                         },
                         {
                             "tag": "P!",
@@ -245,24 +189,10 @@
                             "backgroundColor": "#FF8080"
                         },
                         {
-                            "tag": "P*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#FF8080",
-                            "fontWeight": "bold"
-                        },
-                        {
                             "tag": "P+!",
                             "color": "#000000",
                             "strikethrough": false,
                             "backgroundColor": "#FF06A0"
-                        },
-                        {
-                            "tag": "P+*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#FF06A0",
-                            "fontWeight": "bold"
                         },
                         {
                             "tag": "R!",
@@ -271,24 +201,10 @@
                             "backgroundColor": "#FF3333"
                         },
                         {
-                            "tag": "R*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#FF3333",
-                            "fontWeight": "bold"
-                        },
-                        {
                             "tag": "R+!",
                             "color": "#000000",
                             "strikethrough": false,
                             "backgroundColor": "#FF7373"
-                        },
-                        {
-                            "tag": "R+*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#FF7373",
-                            "fontWeight": "bold"
                         },
                         {
                             "tag": "O!",
@@ -297,37 +213,16 @@
                             "backgroundColor": "#F96F00"
                         },
                         {
-                            "tag": "O*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#F96F00",
-                            "fontWeight": "bold"
-                        },
-                        {
                             "tag": "O+!",
                             "color": "#000000",
                             "strikethrough": false,
                             "backgroundColor": "#FF782C"
                         },
                         {
-                            "tag": "O+*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#FF782C",
-                            "fontWeight": "bold"
-                        },
-                        {
                             "tag": "!",
                             "color": "#000000",
                             "strikethrough": false,
                             "backgroundColor": "#808080"
-                        },
-                        {
-                            "tag": "*!",
-                            "color": "#000000",
-                            "strikethrough": false,
-                            "backgroundColor": "#808080",
-                            "fontWeight": "bold"
                         }
 					]
 				}

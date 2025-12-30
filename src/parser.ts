@@ -398,6 +398,22 @@ export class Parser
     let items = this.contributions.tags;
     for (let item of items)
     {
+      this.registerTag(item);
+
+      // Automatically generate bold variant if it ends with "!" and isn't already a bold tag
+      if (item.tag.endsWith("!") && !item.tag.endsWith("*!")) {
+        let boldTag = item.tag.substring(0, item.tag.length - 1) + "*!";
+        // Check if this bold tag is already explicitly defined to avoid duplicates
+        let alreadyExists = items.some(t => t.tag === boldTag);
+        if (!alreadyExists) {
+          let boldItem = { ...item, tag: boldTag, fontWeight: 'bold' };
+          this.registerTag(boldItem);
+        }
+      }
+    }
+  }
+
+  private registerTag(item: any) {
       let options: vscode.DecorationRenderOptions = { color: item.color, backgroundColor: item.backgroundColor };
       if (item.strikethrough) {
         options.textDecoration = "line-through";
@@ -415,7 +431,6 @@ export class Parser
         ranges: [],
         decoration: vscode.window.createTextEditorDecorationType(options)
       });
-    }
   }
 
 	/**

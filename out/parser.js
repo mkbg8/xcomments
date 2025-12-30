@@ -300,21 +300,34 @@ class Parser {
     setTags() {
         let items = this.contributions.tags;
         for (let item of items) {
-            let options = { color: item.color, backgroundColor: item.backgroundColor };
-            if (item.strikethrough) {
-                options.textDecoration = "line-through";
+            this.registerTag(item);
+            // Automatically generate bold variant if it ends with "!" and isn't already a bold tag
+            if (item.tag.endsWith("!") && !item.tag.endsWith("*!")) {
+                let boldTag = item.tag.substring(0, item.tag.length - 1) + "*!";
+                // Check if this bold tag is already explicitly defined to avoid duplicates
+                let alreadyExists = items.some(t => t.tag === boldTag);
+                if (!alreadyExists) {
+                    let boldItem = Object.assign(Object.assign({}, item), { tag: boldTag, fontWeight: 'bold' });
+                    this.registerTag(boldItem);
+                }
             }
-            if (item.fontWeight) {
-                options.fontWeight = item.fontWeight;
-            }
-            let escapedSequence = item.tag.replace(/([()[{*+.$^\\|?])/g, '\\$1');
-            this.tags.push({
-                tag: item.tag,
-                escapedTag: escapedSequence.replace(/\//gi, "\\/"),
-                ranges: [],
-                decoration: vscode.window.createTextEditorDecorationType(options)
-            });
         }
+    }
+    registerTag(item) {
+        let options = { color: item.color, backgroundColor: item.backgroundColor };
+        if (item.strikethrough) {
+            options.textDecoration = "line-through";
+        }
+        if (item.fontWeight) {
+            options.fontWeight = item.fontWeight;
+        }
+        let escapedSequence = item.tag.replace(/([()[{*+.$^\\|?])/g, '\\$1');
+        this.tags.push({
+            tag: item.tag,
+            escapedTag: escapedSequence.replace(/\//gi, "\\/"),
+            ranges: [],
+            decoration: vscode.window.createTextEditorDecorationType(options)
+        });
     }
     /**
     * Escapes a given string for use in a regular expression
