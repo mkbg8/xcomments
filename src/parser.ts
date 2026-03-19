@@ -39,7 +39,6 @@ export class Parser
   private highlightJSDoc = false;
 
   private isPlainText = false;
-  private ignoreFirstLine = false;
   public supportedLanguage = true;
 
   private contributions: Contributions = vscode.workspace.getConfiguration('highlighted-comments') as any;
@@ -81,7 +80,7 @@ export class Parser
 
     this.expression += "(";
     this.expression += characters.join("|");
-    this.expression += ")+(.*)";
+    this.expression += ")+(?:\\s+.*|$)";
   }
 
 	/**
@@ -105,10 +104,6 @@ export class Parser
       let startPos = activeEditor.document.positionAt(match.index);
       let endPos = activeEditor.document.positionAt(match.index + match[0].length);
       let range = { range: new vscode.Range(startPos, endPos) };
-
-      if (this.ignoreFirstLine && startPos.line === 0 && startPos.character === 0) {
-        continue;
-      }
 
       let matchTag = this.tags.find(item => item.tag.toLowerCase() === match[3].toLowerCase());
       if (matchTag) {
@@ -286,7 +281,6 @@ export class Parser
   private setDelimiter(languageCode: string): void
   {
     this.supportedLanguage = true;
-    this.ignoreFirstLine = false;
     this.isPlainText = false;
 
     switch (languageCode)
@@ -352,13 +346,11 @@ export class Parser
                     break;
 
       case "tcl": this.delimiter = "#";
-                  this.ignoreFirstLine = true;
                   break;
 
       case "elixir":
       case "python":
                      this.setCommentFormat("#", '"""', '"""');
-                     this.ignoreFirstLine = true;
                      break;
 
       case "nim": this.setCommentFormat("#", "#[", "]#");

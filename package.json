@@ -3,8 +3,8 @@
 	"displayName": "Highlighted Comments",
 	"icon": "icon.png",
 	"description": "Add 'highlighter' comments to your code by using a simple syntax. e.g., // Y! This is a yellow highlighted comment",
-	"version": "1.0.0",
-	"publisher": "BRAING8",
+	"version": "1.0.1",
+	"publisher": "BRAING8 LABS",
 	"author": {
 		"name": "BRAING8 LABS"
 	},

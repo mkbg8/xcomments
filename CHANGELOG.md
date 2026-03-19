@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.1]
+* Fixed an issue preventing single line comments on the first line of Python, Elixir, and Tcl files from being highlighted.
+* Added whitespace requirement after comment tag to prevent false positives (e.g. shebangs).
+* Updated supported languages list.
+
 ## [0.6.2]
 * Added Brightscript and XML Support but without samples experimented.
 

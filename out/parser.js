@@ -13,7 +13,6 @@ class Parser {
         this.highlightMultilineComments = false;
         this.highlightJSDoc = false;
         this.isPlainText = false;
-        this.ignoreFirstLine = false;
         this.supportedLanguage = true;
         this.contributions = vscode.workspace.getConfiguration('highlighted-comments');
         this.setTags();
@@ -43,7 +42,7 @@ class Parser {
         }
         this.expression += "(";
         this.expression += characters.join("|");
-        this.expression += ")+(.*)";
+        this.expression += ")+(?:\\s+.*|$)";
     }
     /**
     * Finds all single line comments delimited by a given delimiter and matching tags specified in package.json
@@ -60,9 +59,6 @@ class Parser {
             let startPos = activeEditor.document.positionAt(match.index);
             let endPos = activeEditor.document.positionAt(match.index + match[0].length);
             let range = { range: new vscode.Range(startPos, endPos) };
-            if (this.ignoreFirstLine && startPos.line === 0 && startPos.character === 0) {
-                continue;
-            }
             let matchTag = this.tags.find(item => item.tag.toLowerCase() === match[3].toLowerCase());
             if (matchTag) {
                 matchTag.ranges.push(range);
@@ -190,7 +186,6 @@ class Parser {
   */
     setDelimiter(languageCode) {
         this.supportedLanguage = true;
-        this.ignoreFirstLine = false;
         this.isPlainText = false;
         switch (languageCode) {
             case "asciidoc":
@@ -251,12 +246,10 @@ class Parser {
                 break;
             case "tcl":
                 this.delimiter = "#";
-                this.ignoreFirstLine = true;
                 break;
             case "elixir":
             case "python":
                 this.setCommentFormat("#", '"""', '"""');
-                this.ignoreFirstLine = true;
                 break;
             case "nim":
                 this.setCommentFormat("#", "#[", "]#");
