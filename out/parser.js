@@ -42,7 +42,14 @@ class Parser {
         }
         this.expression += "(";
         this.expression += characters.join("|");
-        this.expression += ")+(?:\\s+.*|$)";
+        this.expression += ")+(?::.*|[ \\t]+.*|$)";
+    }
+    dispose() {
+        this.hideTagDecoration.dispose();
+        for (let tag of this.tags) {
+            tag.decoration.dispose();
+            tag.decorationTag.dispose();
+        }
     }
     /**
     * Finds all single line comments delimited by a given delimiter and matching tags specified in package.json
@@ -85,7 +92,7 @@ class Parser {
         }
         let commentMatchString = "(^)+([ \\t]*[ \\t]*)(";
         commentMatchString += characters.join("|");
-        commentMatchString += ")([ ]*|[:])+([^*/][^\\r\\n]*)";
+        commentMatchString += ")(?:[ \\t]+|[:])([^*/][^\\r\\n]*)";
         let regexString = "(^|[ \\t])(";
         regexString += this.blockCommentStart;
         regexString += "[\\s])+([\\s\\S]*?)(";
@@ -127,7 +134,7 @@ class Parser {
         let commentMatchString = "(^)+([ \\t]*\\*[ \\t]*)(";
         let regEx = /(^|[ \t])(\/\*\*)+([\s\S]*?)(\*\/)/gm;
         commentMatchString += characters.join("|");
-        commentMatchString += ")([ ]*|[:])+([^*/][^\\r\\n]*)";
+        commentMatchString += ")(?:[ \\t]+|[:])([^*/][^\\r\\n]*)";
         let commentRegEx = new RegExp(commentMatchString, "igm");
         let match;
         while (match = regEx.exec(text)) {
@@ -185,6 +192,7 @@ class Parser {
     * https://code.visualstudio.com/docs/languages/identifiers
   */
     setDelimiter(languageCode) {
+        this.resetLanguageState();
         this.supportedLanguage = true;
         this.isPlainText = false;
         switch (languageCode) {
@@ -242,9 +250,6 @@ class Parser {
             case "shellscript":
             case "tcl":
             case "yaml":
-                this.delimiter = "#";
-                break;
-            case "tcl":
                 this.delimiter = "#";
                 break;
             case "elixir":
@@ -385,6 +390,15 @@ class Parser {
         this.blockCommentStart = this.escapeRegExp(start);
         this.blockCommentEnd = this.escapeRegExp(end);
         this.highlightMultilineComments = this.contributions.multilineComments;
+    }
+    resetLanguageState() {
+        this.expression = "";
+        this.delimiter = "";
+        this.blockCommentStart = "";
+        this.blockCommentEnd = "";
+        this.highlightSingleLineComments = true;
+        this.highlightMultilineComments = false;
+        this.highlightJSDoc = false;
     }
 }
 exports.Parser = Parser;

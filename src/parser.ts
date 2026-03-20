@@ -80,7 +80,18 @@ export class Parser
 
     this.expression += "(";
     this.expression += characters.join("|");
-    this.expression += ")+(?:\\s+.*|$)";
+    this.expression += ")+(?::.*|[ \\t]+.*|$)";
+  }
+
+  public dispose(): void
+  {
+    this.hideTagDecoration.dispose();
+
+    for (let tag of this.tags)
+    {
+      tag.decoration.dispose();
+      tag.decorationTag.dispose();
+    }
   }
 
 	/**
@@ -140,7 +151,7 @@ export class Parser
 
     let commentMatchString = "(^)+([ \\t]*[ \\t]*)(";
     commentMatchString += characters.join("|");
-    commentMatchString += ")([ ]*|[:])+([^*/][^\\r\\n]*)";
+    commentMatchString += ")(?:[ \\t]+|[:])([^*/][^\\r\\n]*)";
 
     let regexString = "(^|[ \\t])(";
     regexString += this.blockCommentStart;
@@ -198,7 +209,7 @@ export class Parser
     let regEx = /(^|[ \t])(\/\*\*)+([\s\S]*?)(\*\/)/gm; 
 
     commentMatchString += characters.join("|");
-    commentMatchString += ")([ ]*|[:])+([^*/][^\\r\\n]*)";
+    commentMatchString += ")(?:[ \\t]+|[:])([^*/][^\\r\\n]*)";
 
     let commentRegEx = new RegExp(commentMatchString, "igm");
 
@@ -280,6 +291,8 @@ export class Parser
   
   private setDelimiter(languageCode: string): void
   {
+    this.resetLanguageState();
+
     this.supportedLanguage = true;
     this.isPlainText = false;
 
@@ -344,9 +357,6 @@ export class Parser
       case "yaml":
                     this.delimiter = "#";
                     break;
-
-      case "tcl": this.delimiter = "#";
-                  break;
 
       case "elixir":
       case "python":
@@ -509,5 +519,16 @@ export class Parser
     this.blockCommentStart = this.escapeRegExp(start);
     this.blockCommentEnd = this.escapeRegExp(end);
     this.highlightMultilineComments = this.contributions.multilineComments;
+  }
+
+  private resetLanguageState(): void
+  {
+    this.expression = "";
+    this.delimiter = "";
+    this.blockCommentStart = "";
+    this.blockCommentEnd = "";
+    this.highlightSingleLineComments = true;
+    this.highlightMultilineComments = false;
+    this.highlightJSDoc = false;
   }
 }

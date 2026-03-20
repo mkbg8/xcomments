@@ -27,9 +27,11 @@ Each color comes in a standard (`!`) and a brighter (`+!`) variant.
 *   `M!` / `M+!` : <span style="color:#DE50FF">Magenta</span> (Tag / Section)
 *   `P!` / `P+!` : <span style="color:#FF8080">Pink</span> (Highlight)
 
-> **Note:** As of version 1.0.1, a **whitespace character (space or tab) is required** after the tag for the comment to be highlighted. This prevents accidental highlighting of constructs like shebangs (`#!`).
+> **Note:** As of version 1.0.1, a **space, tab, colon, or end-of-line is required** after the tag for the comment to be highlighted. This prevents accidental highlighting of constructs like shebangs (`#!`).
 >
 > *   ✅ `// R! Critical Error`
+> *   ✅ `// R!: Critical Error`
+> *   ✅ `// R!`
 > *   ❌ `// R!Critical Error` (No space)
 
 ## Examples

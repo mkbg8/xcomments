@@ -2,8 +2,10 @@
 
 ## [1.0.1]
 * Fixed an issue preventing single line comments on the first line of Python, Elixir, and Tcl files from being highlighted.
-* Added whitespace requirement after comment tag to prevent false positives (e.g. shebangs).
+* Added whitespace/colon requirement after comment tag across all comment types (single line, block, JSDoc) to prevent mismatched highlighting and false positives (e.g. shebangs).
+* Fixed a potential regex issue where tags at end of line could consume following code lines.
 * Updated supported languages list.
+* Fixed test execution environment.
 
 ## [0.6.2]
 * Added Brightscript and XML Support but without samples experimented.
